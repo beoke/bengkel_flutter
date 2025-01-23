@@ -110,8 +110,8 @@ class HomePage extends StatelessWidget {
                     Colors.blue, // Warna biru di sebelah kiri
                     Colors.red, // Warna merah di sebelah kanan
                   ],
-                  begin: Alignment.centerLeft, // Mulai dari kiri tengah
-                  end: Alignment.centerRight, // Berakhir di kanan tengah
+                  begin: Alignment.bottomLeft, // Mulai dari kiri tengah
+                  end: Alignment.topRight, // Berakhir di kanan tengah
                 ),
                 borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(20), // Sudut lengkung di bagian bawah
@@ -130,23 +130,29 @@ class HomePage extends StatelessWidget {
                     // Gambar profil
                     CircleAvatar(
                       radius: 20,
-                      backgroundImage: AssetImage(
-                          'assets/profile_pic.jpg'), // Ganti dengan gambar profil
+                      backgroundImage: AssetImage('assets/profil.png'),
                     ),
                     const SizedBox(width: 12),
                     // Label "Hai, nama user..."
                     const Text(
-                      'Hai, nama user...',
+                      'Hai, Dhafa Bintang...',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 25,
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                     const Spacer(),
                     // Ikon lonceng
-                    IconButton(
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {}, // Aksi ketika ikon diklik
+                    InkWell(
+                      onTap: () {
+                        // Aksi ketika gambar diklik
+                      },
+                      child: Image.asset(
+                        'assets/bell_32.png', // Path ke gambar bell.png
+                        width: 24, // Sesuaikan ukuran gambar
+                        height: 24,
+                      ),
                     ),
                   ],
                 ),
@@ -215,19 +221,43 @@ class HomePage extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _buildElement(
-                                icon: Icons.shopping_cart,
+                                icon: 'assets/belanja.png',
                                 title: 'Belanja',
-                                onTap: () {},
+                                onTap: () {
+                                  //Navigator.push(
+                                  // context,
+                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                },
+                                offset: const Offset(
+                                    10, 0), // geser gambar ke kanan
+                                textOffset:
+                                    const Offset(15, 0), // Geser teks ke kanan
                               ),
                               _buildElement(
-                                icon: Icons.build,
+                                icon: 'assets/paket_service.png',
                                 title: 'Paket Service',
-                                onTap: () {},
+                                onTap: () {
+                                  //Navigator.push(
+                                  // context,
+                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                },
+                                offset:
+                                    const Offset(7, 0), // geser gambar ke kiri
+                                textOffset:
+                                    const Offset(7, 0), // Geser teks ke kiri
                               ),
                               _buildElement(
-                                icon: Icons.chat,
+                                icon: 'assets/consultant_64.png',
                                 title: 'Konsultasi',
-                                onTap: () {},
+                                onTap: () {
+                                  //Navigator.push(
+                                  // context,
+                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                },
+                                offset: const Offset(
+                                    -10, 0), // geser gambar ke kiri
+                                textOffset:
+                                    const Offset(-10, 0), // Geser teks ke kiri
                               ),
                             ],
                           ),
@@ -361,17 +391,36 @@ class HomePage extends StatelessWidget {
 
   // Function to build each element card (Belanja, Paket Service, Konsultasi)
   Widget _buildElement({
-    required IconData icon,
+    required String icon,
     required String title,
     required VoidCallback onTap,
+    Offset offset = Offset.zero, // Opsional: untuk menggeser gambar
+    Offset textOffset = Offset.zero, // Opsional: untuk menggeser teks
   }) {
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
-          Icon(icon, size: 40, color: Colors.blue),
+          Transform.translate(
+            offset: offset, // Geser gambar sesuai nilai offset
+            child: Image.asset(
+              icon,
+              width: 40,
+              height: 40,
+            ),
+          ),
           const SizedBox(height: 8),
-          Text(title),
+          Transform.translate(
+            offset: textOffset, // Geser teks sesuai nilai textOffset
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );
