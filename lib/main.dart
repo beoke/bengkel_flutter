@@ -1,6 +1,6 @@
 import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
-import 'user.dart';
+import 'profile/profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,6 +53,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       // Hilangkan AppBar
       body: _pages[_selectedIndex], // Tampilkan halaman yang dipilih
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex, // Indeks yang aktif
         onTap: _onItemTapped, // Fungsi saat item diklik
@@ -94,237 +95,266 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       // Tidak menggunakan AppBar
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            // Bagian atas: Gambar profil, label, dan ikon lonceng
-            Row(
-              children: [
-                // Gambar profil
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage: AssetImage(
-                      'assets/profile_pic.jpg'), // Ganti dengan gambar profil
-                ),
-                const SizedBox(width: 12),
-                // Label "Hai, nama user..."
-                const Text(
-                  'Hai, nama user...',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Spacer(),
-                // Ikon lonceng
-                IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () {}, // arah ketika di klik
-                ),
-              ],
-            ),
-            const SizedBox(height: 30), // Jarak antara bagian atas dan konten
-
-            // Saldo dan Point Box
-            Container(
-              margin: const EdgeInsets.symmetric(vertical: 16),
+      body: Stack(
+        children: [
+          // Container kuning di belakang (separo tinggi halaman)
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: MediaQuery.of(context).size.height * 0.27, // Tinggi halaman
+            child: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    const Color.fromARGB(255, 224, 19, 19), // Merah muda
-                    const Color.fromARGB(255, 37, 130, 250), // Merah tua
+                    Colors.blue, // Warna biru di sebelah kiri
+                    Colors.red, // Warna merah di sebelah kanan
                   ],
-                  begin:
-                      Alignment.topLeft, // Arah gradient dimulai dari kiri atas
-                  end: Alignment
-                      .bottomRight, // Arah gradient berakhir di kanan bawah
+                  begin: Alignment.centerLeft, // Mulai dari kiri tengah
+                  end: Alignment.centerRight, // Berakhir di kanan tengah
                 ),
-                borderRadius: BorderRadius.circular(8), // Sudut melengkung
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
+                borderRadius: const BorderRadius.vertical(
+                  bottom: Radius.circular(20), // Sudut lengkung di bagian bawah
+                ),
               ),
-              child: Card(
-                elevation: 0, // Hilangkan shadow bawaan Card
-                color: Colors.transparent, // Buat Card transparan
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Bagian Saldo dan Point
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+          ),
+          // Konten utama
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView(
+              children: [
+                // Bagian atas: Gambar profil, label, dan ikon lonceng
+                Row(
+                  children: [
+                    // Gambar profil
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: AssetImage(
+                          'assets/profile_pic.jpg'), // Ganti dengan gambar profil
+                    ),
+                    const SizedBox(width: 12),
+                    // Label "Hai, nama user..."
+                    const Text(
+                      'Hai, nama user...',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Spacer(),
+                    // Ikon lonceng
+                    IconButton(
+                      icon: const Icon(Icons.notifications),
+                      onPressed: () {}, // Aksi ketika ikon diklik
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                    height: 10), // Jarak antara bagian atas dan konten
+
+                // Saldo dan Point Box
+                Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        const Color.fromARGB(255, 224, 19, 19), // Merah muda
+                        const Color.fromARGB(255, 37, 130, 250), // Merah tua
+                      ],
+                      begin: Alignment
+                          .topLeft, // Arah gradient dimulai dari kiri atas
+                      end: Alignment
+                          .bottomRight, // Arah gradient berakhir di kanan bawah
+                    ),
+                    borderRadius: BorderRadius.circular(8), // Sudut melengkung
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Card(
+                    elevation: 0, // Hilangkan shadow bawaan Card
+                    color: Colors.transparent, // Buat Card transparan
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            'Saldo Anda: Rp. *****    || ',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white, // Warna teks putih
-                            ),
+                          // Bagian Saldo dan Point
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Saldo Anda: Rp. ***** || ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white, // Warna teks putih
+                                ),
+                              ),
+                              const Text(
+                                'Point Anda: 1200',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white, // Warna teks putih
+                                ),
+                              ),
+                            ],
                           ),
-                          const Text(
-                            'Point Anda: 1200',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white, // Warna teks putih
-                            ),
+                          const SizedBox(
+                              height: 16), // Spasi antara saldo dan fitur
+
+                          // Bagian 3 Elements (Belanja, Paket Service, Konsultasi)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _buildElement(
+                                icon: Icons.shopping_cart,
+                                title: 'Belanja',
+                                onTap: () {},
+                              ),
+                              _buildElement(
+                                icon: Icons.build,
+                                title: 'Paket Service',
+                                onTap: () {},
+                              ),
+                              _buildElement(
+                                icon: Icons.chat,
+                                title: 'Konsultasi',
+                                onTap: () {},
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                      const SizedBox(
-                          height: 16), // Spasi antara saldo dan fitur
+                    ),
+                  ),
+                ),
 
-                      // Bagian 3 Elements (Belanja, Paket Service, Konsultasi)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          _buildElement(
-                            icon: Icons.shopping_cart,
-                            title: 'Belanja',
-                            onTap: () {},
-                          ),
-                          _buildElement(
-                            icon: Icons.build,
-                            title: 'Paket Service',
-                            onTap: () {},
-                          ),
-                          _buildElement(
-                            icon: Icons.chat,
-                            title: 'Konsultasi',
-                            onTap: () {},
-                          ),
-                        ],
+                // Akses Cepat Section
+                const SizedBox(height: 16),
+                RichText(
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Akses', // Teks "Akses"
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red, // Warna merah
+                        ),
+                      ),
+                      TextSpan(
+                        text: '  ', // Spasi manual (2 spasi)
+                      ),
+                      TextSpan(
+                        text: 'Cepat', // Teks "Cepat"
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black, // Warna hitam
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-
-            // Akses Cepat Section
-            const SizedBox(height: 16),
-            RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Akses', // Teks "Akses"
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red, // Warna merah
+                const SizedBox(height: 8),
+                // Akses Cepat Box
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: const Text(
+                      'Info terbaru dari service kendaraan anda akan terinfokan di sini',
+                      style: TextStyle(fontSize: 14),
                     ),
                   ),
-                  TextSpan(
-                    text: '  ', // Spasi manual (2 spasi)
-                  ),
-                  TextSpan(
-                    text: 'Cepat', // Teks "Cepat"
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black, // Warna hitam
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Akses Cepat Box
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: const Text(
-                  'Info terbaru dari service kendaraan anda akan terinfokan di sini',
-                  style: TextStyle(fontSize: 14),
                 ),
-              ),
-            ),
 
-            // Promo Terbaru Section
-            const SizedBox(height: 16),
-            RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Promo', // Teks "Promo"
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red, // Warna merah
+                // Promo Terbaru Section
+                const SizedBox(height: 16),
+                RichText(
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Promo', // Teks "Promo"
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red, // Warna merah
+                        ),
+                      ),
+                      TextSpan(
+                        text: '  ', // Spasi manual (2 spasi)
+                      ),
+                      TextSpan(
+                        text: 'Terbaru', // Teks "Terbaru"
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black, // Warna hitam
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // Kode Promo TextBox
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Masukkan kode promo',
+                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.card_giftcard),
+                  ),
+                ),
+
+                // promo
+                const SizedBox(height: 8),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 4,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(40.0),
+                    child: const Text(
+                      'Info promo akan tertampil di sini',
+                      style: TextStyle(fontSize: 14),
                     ),
                   ),
-                  TextSpan(
-                    text: '  ', // Spasi manual (2 spasi)
-                  ),
-                  TextSpan(
-                    text: 'Terbaru', // Teks "Terbaru"
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black, // Warna hitam
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-
-            // Kode Promo TextBox
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'Masukkan kode promo',
-                border: OutlineInputBorder(),
-                prefixIcon: const Icon(Icons.card_giftcard),
-              ),
-            ),
-
-            // promo
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(40.0),
-                child: const Text(
-                  'Info promo akan tertampil di sini',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -393,21 +423,18 @@ class LocationPage extends StatelessWidget {
   }
 }
 
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const UserProfileScreen()),
-            );
-          },
-        ),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Center(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const UserProfileScreen()),
+          );
+        },
       ),
-    );
-  }
-
+    ),
+  );
+}
