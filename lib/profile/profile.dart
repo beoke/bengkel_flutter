@@ -1,5 +1,6 @@
 import 'package:bengkel_flutter/profile/addkendaraan.dart';
-import 'package:bengkel_flutter/profile/editprofile.dart';
+import 'package:bengkel_flutter/profile/edit/editprofile.dart';
+import 'package:bengkel_flutter/profile/edit/editkendaraan.dart';
 import 'package:flutter/material.dart';
 import 'tutorial.dart';
 
@@ -73,7 +74,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               ),
             ),
             actions: [
-             Transform.translate(
+              Transform.translate(
                 offset: const Offset(-10.0, 0), // Geser ke kiri
                 child: IconButton(
                   icon: const Icon(Icons.notifications),
@@ -138,7 +139,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
-                        // Card untuk Edit Profile
+                    // Card untuk Edit Profile
                     Card(
                       elevation: 4,
                       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -162,7 +163,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 size: 30,
                                 color: Colors.blue, // Warna ikon biru
                               ),
-                              const SizedBox(width: 12), // Jarak antara ikon dan teks
+                              const SizedBox(
+                                  width: 12), // Jarak antara ikon dan teks
                               // Label "Edit Profile"
                               const Text(
                                 'Edit Profile',
@@ -184,8 +186,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ),
                     ),
 
-                         // Card untuk tambah kendaraan
-                     Card(
+                    // Card untuk tambah kendaraan
+                    Card(
                       elevation: 4,
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: InkWell(
@@ -203,12 +205,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           child: Row(
                             children: [
                               // Ikon edit profile di sebelah kiri
-                              const Icon(
-                                Icons.motorcycle, // Ikon edit
-                                size: 30,
-                                color: Colors.blue, // Warna ikon biru
+                              Image.asset(
+                                'assets/scooter.png', // Path ke gambar kustom
+                                width: 30, // Sesuaikan ukuran gambar
+                                height: 30,
                               ),
-                              const SizedBox(width: 12), // Jarak antara ikon dan teks
+                              const SizedBox(
+                                  width: 12), // Jarak antara ikon dan teks
                               // Label "Edit Profile"
                               const Text(
                                 'Tambah kendaraan',
@@ -220,7 +223,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                               const Spacer(), // Mengisi ruang kosong di antara label dan ikon panah
                               // Ikon panah ke kanan
                               const Icon(
-                                Icons.chevron_right, // Ikon ">"
+                                Icons.chevron_right,
                                 size: 24,
                                 color: Colors.grey, // Warna ikon abu-abu
                               ),
@@ -269,48 +272,73 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       ],
                     ),
                     const SizedBox(height: 5),
-                    if (_showinfokendaraan) // Tampilkan info kendaraan jika _showVehicleInfo true
+                    if (_showinfokendaraan) // Tampilkan info kendaraan jika _showinfokendaraan true
                       Card(
                         elevation: 4,
                         margin: const EdgeInsets.symmetric(vertical: 8),
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
-                          child: Row(
+                          child: Stack(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: const [
-                                    Icon(
-                                      Icons.motorcycle,
-                                      size: 40,
-                                      color: Colors.blue,
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 30),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: const [
+                                        Icon(
+                                          Icons.motorcycle,
+                                          size: 40,
+                                          color: Colors.blue,
+                                        ),
+                                        SizedBox(height: 4),
+                                        Text(
+                                          'Motor',
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(height: 4),
-                                    Text(
-                                      'Motor',
-                                      style: TextStyle(fontSize: 14),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: const [
+                                        Text(
+                                          'Nomor Polisi: B 1234 XYZ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text('Merek: Honda'),
+                                        Text('CC: 150 CC'),
+                                        Text('Jenis: Motor Sport'),
+                                        Text('Tahun: 2022'),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 16),
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
-                                    Text(
-                                      'Nomor Polisi: B 1234 XYZ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text('Merek: Honda'),
-                                    Text('CC: 150 CC'),
-                                    Text('Jenis: Motor Sport'),
-                                    Text('Tahun: 2022'),
-                                  ],
+                              // Ikon edit di pojok kanan bawah
+                              Positioned(
+                                right: 10,
+                                bottom: 2,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => // klik menuju edit kendaraan
+                                                EditKendaraanScreen()));
+                                  },
+                                  child: Image.asset(
+                                    'assets/edit.png',
+                                    width: 24,
+                                    height: 24,
+                                  ),
                                 ),
                               ),
                             ],
