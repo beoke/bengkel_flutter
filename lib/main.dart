@@ -1,6 +1,7 @@
 import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
 import 'profile/profile.dart';
+import 'booking/bookingjadwal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const HomePage(), // home page
     const HistoryPage(), // history page
-    const BookingPage(), // booking page
+    const BookingScreen(), // booking page
     const LocationPage(), // location page
     const UserProfileScreen(), // profile page
   ];
@@ -442,16 +443,21 @@ class HistoryPage extends StatelessWidget {
   }
 }
 
-// Halaman Booking
-class BookingPage extends StatelessWidget {
-  const BookingPage({super.key});
+class BooKing extends StatelessWidget {
+  const BooKing({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Halaman Booking',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Scaffold(
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookingScreen()),
+            );
+          },
+        ),
       ),
     );
   }
