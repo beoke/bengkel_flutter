@@ -16,7 +16,11 @@ class _BookingScreenState extends State<BookingScreen> {
   final TextEditingController complaintController = TextEditingController();
 
   final List<String> vehicles = ['Mobil', 'Motor', 'Sepeda'];
-  final List<String> servicePackages = ['Paket Basic', 'Paket Standard', 'Paket Premium'];
+  final List<String> servicePackages = [
+    'Paket Basic',
+    'Paket Standard',
+    'Paket Premium'
+  ];
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -43,6 +47,38 @@ class _BookingScreenState extends State<BookingScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+
+            // Input kalender dengan ikon tanggal
+            InkWell(
+              onTap: () => _selectDate(context),
+              child: InputDecorator(
+                decoration: InputDecoration(
+                  labelText: 'Pilih Tanggal',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
+                child: Text(
+                  selectedDate != null
+                      ? "${selectedDate!.toLocal()}".split(' ')[0]
+                      : 'Pilih Tanggal',
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // TextField untuk memilih lokasi
+            TextField(
+              controller: locationController,
+              decoration: InputDecoration(
+                labelText: 'Lokasi',
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+              ),
+            ),
+            const SizedBox(height: 20),
+
             // ComboBox untuk memilih jenis kendaraan
             DropdownButtonFormField<String>(
               value: selectedVehicle,
@@ -63,23 +99,14 @@ class _BookingScreenState extends State<BookingScreen> {
                   );
                 }).toList(),
               ],
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Jenis Kendaraan',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
             const SizedBox(height: 20),
-
-            // TextField untuk memilih lokasi
-            TextField(
-              controller: locationController,
-              decoration: const InputDecoration(
-                labelText: 'Lokasi',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-
+            
             // ComboBox untuk memilih jenis paket service
             DropdownButtonFormField<String>(
               value: selectedServicePackage,
@@ -93,16 +120,17 @@ class _BookingScreenState extends State<BookingScreen> {
                   value: null,
                   child: Text('Pilih Jenis Paket Service'),
                 ),
-                ...servicePackages.map<DropdownMenuItem<String>>((String value) {
+                ...servicePackages
+                    .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
                   );
                 }).toList(),
               ],
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Jenis Paket Service',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
             const SizedBox(height: 20),
@@ -110,31 +138,15 @@ class _BookingScreenState extends State<BookingScreen> {
             // TextField untuk mengisi keluhan
             TextField(
               controller: complaintController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Keluhan',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 20),
-
-            // Input kalender dengan ikon tanggal
-            InkWell(
-              onTap: () => _selectDate(context),
-              child: InputDecorator(
-                decoration: const InputDecoration(
-                  labelText: 'Pilih Tanggal',
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.calendar_today),
-                ),
-                child: Text(
-                  selectedDate != null
-                      ? "${selectedDate!.toLocal()}".split(' ')[0]
-                      : 'Pilih Tanggal',
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 40),
 
             // Tombol untuk melakukan booking dengan gradient
             Container(
@@ -169,7 +181,8 @@ class _BookingScreenState extends State<BookingScreen> {
                             Text('Lokasi: $location'),
                             Text('Paket Service: $servicePackage'),
                             Text('Keluhan: $complaint'),
-                            Text('Tanggal: ${date != null ? "${date.toLocal()}".split(' ')[0] : "Tidak dipilih"}'),
+                            Text(
+                                'Tanggal: ${date != null ? "${date.toLocal()}".split(' ')[0] : "Tidak dipilih"}'),
                           ],
                         ),
                         actions: [
@@ -187,7 +200,8 @@ class _BookingScreenState extends State<BookingScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent, // Warna latar transparan
                   shadowColor: Colors.transparent, // Hilangkan shadow
-                  padding: const EdgeInsets.symmetric(vertical: 16), // Padding tombol
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16), // Padding tombol
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8), // Border radius
                   ),

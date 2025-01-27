@@ -2,6 +2,7 @@ import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
 import 'profile/profile.dart';
 import 'booking/bookingjadwal.dart';
+import 'riwayat/riwayat.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
   // Daftar halaman yang sesuai dengan item BottomNavigationBar
   final List<Widget> _pages = [
     const HomePage(), // home page
-    const HistoryPage(), // history page
+    const RiwayatScreen(), // history page
     const BookingScreen(), // booking page
     const LocationPage(), // location page
     const UserProfileScreen(), // profile page
@@ -429,20 +430,25 @@ class HomePage extends StatelessWidget {
 }
 
 // Halaman Riwayat
-class HistoryPage extends StatelessWidget {
-  const HistoryPage({super.key});
+class RiwaYat extends StatelessWidget {
+  const RiwaYat({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Halaman Riwayat',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Scaffold(
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RiwayatScreen()));
+          },
+        ),
       ),
     );
   }
 }
 
+// Halaman booking
 class BooKing extends StatelessWidget {
   const BooKing({super.key});
 
