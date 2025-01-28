@@ -1,8 +1,10 @@
+import 'package:bengkel_flutter/home/belanja.dart';
 import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
 import 'profile/profile.dart';
 import 'booking/bookingjadwal.dart';
 import 'riwayat/riwayat.dart';
+import 'home/belanja.dart';
 
 void main() {
   runApp(const MyApp());
@@ -226,9 +228,12 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/belanja.png',
                                 title: 'Belanja',
                                 onTap: () {
-                                  //Navigator.push(
-                                  // context,
-                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => BelanjaScreen(),
+                                    ),
+                                  );
                                 },
                                 offset: const Offset(
                                     10, 0), // geser gambar ke kanan
@@ -236,7 +241,7 @@ class HomePage extends StatelessWidget {
                                     const Offset(15, 0), // Geser teks ke kanan
                               ),
                               _buildElement(
-                                icon: 'assets/paket_service.png',
+                                icon: 'assets/mechanic.png',
                                 title: 'Paket Service',
                                 onTap: () {
                                   //Navigator.push(
@@ -252,9 +257,12 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/consultant_64.png',
                                 title: 'Konsultasi',
                                 onTap: () {
-                                  //Navigator.push(
-                                  // context,
-                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) => Beranda(),
+                                  //   ),
+                                  // );
                                 },
                                 offset: const Offset(
                                     -10, 0), // geser gambar ke kiri
