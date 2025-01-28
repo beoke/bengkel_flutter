@@ -5,6 +5,7 @@ import 'profile/profile.dart';
 import 'booking/bookingjadwal.dart';
 import 'riwayat/riwayat.dart';
 import 'home/belanja.dart';
+import 'home/paketservice.dart';
 
 void main() {
   runApp(const MyApp());
@@ -244,9 +245,12 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/mechanic.png',
                                 title: 'Paket Service',
                                 onTap: () {
-                                  //Navigator.push(
-                                  // context,
-                                  // MaterialPageRoute(builder: (context) => BelanjaForm()),
+                                 Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PaketserviceScreen(),
+                                    ),
+                                  );
                                 },
                                 offset:
                                     const Offset(7, 0), // geser gambar ke kiri
