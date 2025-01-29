@@ -1,4 +1,5 @@
 import 'package:bengkel_flutter/home/belanja.dart';
+import 'package:bengkel_flutter/home/konsultasi.dart';
 import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
 import 'profile/profile.dart';
@@ -261,12 +262,12 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/consultant_64.png',
                                 title: 'Konsultasi',
                                 onTap: () {
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) => Beranda(),
-                                  //   ),
-                                  // );
+                                 Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => KonsultasiScreen(),
+                                    ),
+                                  );
                                 },
                                 offset: const Offset(
                                     -10, 0), // geser gambar ke kiri
@@ -429,7 +430,7 @@ class HomePage extends StatelessWidget {
             child: Text(
               title,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
