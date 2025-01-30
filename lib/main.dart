@@ -1,5 +1,6 @@
 import 'package:bengkel_flutter/home/belanja.dart';
 import 'package:bengkel_flutter/home/konsultasi.dart';
+import 'package:bengkel_flutter/home/notifikasi.dart';
 import 'package:bengkel_flutter/login_regis/login.dart';
 import 'package:flutter/material.dart';
 import 'profile/profile.dart';
@@ -152,7 +153,10 @@ class HomePage extends StatelessWidget {
                     // Ikon lonceng
                     InkWell(
                       onTap: () {
-                        // Aksi ketika gambar diklik
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NotifikasiScreen()));
                       },
                       child: Image.asset(
                         'assets/bell_32.png', // Path ke gambar bell.png
@@ -246,10 +250,11 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/mechanic.png',
                                 title: 'Paket Service',
                                 onTap: () {
-                                 Navigator.push(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => PaketserviceScreen(),
+                                      builder: (context) =>
+                                          PaketserviceScreen(),
                                     ),
                                   );
                                 },
@@ -262,7 +267,7 @@ class HomePage extends StatelessWidget {
                                 icon: 'assets/consultant_64.png',
                                 title: 'Konsultasi',
                                 onTap: () {
-                                 Navigator.push(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => KonsultasiScreen(),

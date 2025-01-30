@@ -1,3 +1,4 @@
+import 'package:bengkel_flutter/home/notifikasi.dart';
 import 'package:bengkel_flutter/profile/addkendaraan.dart';
 import 'package:bengkel_flutter/profile/edit/editprofile.dart';
 import 'package:bengkel_flutter/profile/edit/editkendaraan.dart';
@@ -77,13 +78,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               Transform.translate(
                 offset: const Offset(-10.0, 0), // Geser ke kiri
                 child: IconButton(
-                  icon: const Icon(Icons.notifications),
-                  color: Colors.white,
+                  icon: ImageIcon(
+                    AssetImage('assets/bell_32.png'),
+                    color: Colors.white,
+                  ),
                   onPressed: () {
-                    // Aksi ketika ikon lonceng diklik
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            NotifikasiScreen(), // Navigasi ke NotifikasiScreen
+                      ),
+                    );
                   },
                 ),
-              )
+              ),
             ],
           ),
           SliverList(
@@ -331,8 +340,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => // klik menuju edit kendaraan
-                                                EditKendaraanScreen()));
+                                            builder:
+                                                (context) => // klik menuju edit kendaraan
+                                                    EditKendaraanScreen()));
                                   },
                                   child: Image.asset(
                                     'assets/edit.png',
