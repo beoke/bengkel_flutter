@@ -54,7 +54,7 @@ class _KonsultasiScreenState extends State<KonsultasiScreen> {
               child: Container(
                 // Tempat untuk konten lain (opsional)
                 child: const Center(
-                  child: Text('Konten lainnya bisa ditempatkan di sini.'),
+                  child: Text('halo'),
                 ),
               ),
             ),
