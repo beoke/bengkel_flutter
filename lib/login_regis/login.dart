@@ -24,9 +24,9 @@ class LoginPage extends StatelessWidget {
         width: double.infinity, // Lebar container mengisi layar
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter, // Gradien dimulai dari atas
+            begin: Alignment.topLeft, // Gradien dimulai dari atas
             colors: [
-              Colors.orange.shade900, // Warna gradien oranye tua
+              Colors.red.shade900, // Warna gradien oranye tua
               Colors.orange.shade800, // Warna gradien oranye sedang
               Colors.orange.shade400, // Warna gradien oranye muda
             ],
@@ -46,9 +46,12 @@ class LoginPage extends StatelessWidget {
                     duration: const Duration(
                         milliseconds: 1000), // Animasi selama 1 detik
                     child: const Text(
-                      "Login", // Judul "Login"
+                      "Selamat Datang", // Judul "Login"
                       style: TextStyle(
-                          color: Colors.white, fontSize: 40), // Gaya teks
+                        color: Colors.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold, // Membuat teks bold
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10), // Jarak antara judul dan subjudul
@@ -56,7 +59,7 @@ class LoginPage extends StatelessWidget {
                     duration: const Duration(
                         milliseconds: 1300), // Animasi selama 1.3 detik
                     child: const Text(
-                      "Welcome Back", // Subjudul "Welcome Back"
+                      "Bengkel Techno DB", // Subjudul "Welcome Back"
                       style: TextStyle(
                           color: Colors.white, fontSize: 18), // Gaya teks
                     ),

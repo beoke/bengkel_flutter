@@ -67,17 +67,6 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
             const SizedBox(height: 20),
 
-            // TextField untuk memilih lokasi
-            TextField(
-              controller: locationController,
-              decoration: InputDecoration(
-                labelText: 'Lokasi',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-              ),
-            ),
-            const SizedBox(height: 20),
-
             // ComboBox untuk memilih jenis kendaraan
             DropdownButtonFormField<String>(
               value: selectedVehicle,
@@ -145,7 +134,7 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               maxLines: 3,
             ),
-            const SizedBox(height: 40),
+            const SizedBox(height: 130),
 
             // Tombol untuk melakukan booking dengan gradient
             Container(
@@ -161,7 +150,6 @@ class _BookingScreenState extends State<BookingScreen> {
                 onPressed: () {
                   // Lakukan sesuatu dengan data yang diinput
                   final vehicle = selectedVehicle;
-                  final location = locationController.text;
                   final servicePackage = selectedServicePackage;
                   final complaint = complaintController.text;
                   final date = selectedDate;
@@ -177,7 +165,6 @@ class _BookingScreenState extends State<BookingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Jenis Kendaraan: $vehicle'),
-                            Text('Lokasi: $location'),
                             Text('Paket Service: $servicePackage'),
                             Text('Keluhan: $complaint'),
                             Text(

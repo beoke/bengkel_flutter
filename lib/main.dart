@@ -42,9 +42,8 @@ class _MainScreenState extends State<MainScreen> {
   // Daftar halaman yang sesuai dengan item BottomNavigationBar
   final List<Widget> _pages = [
     const HomePage(), // home page
-    const RiwayatScreen(), // history page
     const BookingScreen(), // booking page
-    const LocationPage(), // location page
+    const RiwayatScreen(), // history page
     const UserProfileScreen(), // profile page
   ];
 
@@ -73,16 +72,12 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Riwayat',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.date_range),
             label: 'Booking',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Lokasi',
+            icon: Icon(Icons.history),
+            label: 'Riwayat',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -114,11 +109,13 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.blue, // Warna biru di sebelah kiri
-                    Colors.red, // Warna merah di sebelah kanan
+                    Colors.red.shade900, // Warna gradien oranye tua
+                    Colors.orange.shade800, // Warna gradien oranye sedang
+                    Colors.orange.shade400, // Warna gradien oranye muda
                   ],
-                  begin: Alignment.bottomLeft, // Mulai dari kiri tengah
-                  end: Alignment.topRight, // Berakhir di kanan tengah
+  
+                  begin: Alignment.topCenter, // Mulai dari kiri tengah
+                  end: Alignment.bottomCenter, // Berakhir di kanan tengah
                 ),
                 borderRadius: const BorderRadius.vertical(
                   bottom: Radius.circular(20), // Sudut lengkung di bagian bawah
@@ -176,13 +173,11 @@ class HomePage extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        const Color.fromARGB(255, 224, 19, 19), // Merah muda
-                        const Color.fromARGB(255, 37, 130, 250), // Merah tua
+                        const Color.fromARGB(255, 224, 19, 19),
+                        const Color.fromARGB(255, 37, 130, 250),
                       ],
-                      begin: Alignment
-                          .topLeft, // Arah gradient dimulai dari kiri atas
-                      end: Alignment
-                          .bottomRight, // Arah gradient berakhir di kanan bawah
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                     borderRadius: BorderRadius.circular(8), // Sudut melengkung
                     boxShadow: [
@@ -447,25 +442,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Halaman Riwayat
-class RiwaYat extends StatelessWidget {
-  const RiwaYat({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => RiwayatScreen()));
-          },
-        ),
-      ),
-    );
-  }
-}
-
 // Halaman booking
 class BooKing extends StatelessWidget {
   const BooKing({super.key});
@@ -487,16 +463,20 @@ class BooKing extends StatelessWidget {
   }
 }
 
-// Halaman Lokasi
-class LocationPage extends StatelessWidget {
-  const LocationPage({super.key});
+// Halaman Riwayat
+class RiwaYat extends StatelessWidget {
+  const RiwaYat({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Halaman Lokasi',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+    return Scaffold(
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => RiwayatScreen()));
+          },
+        ),
       ),
     );
   }
