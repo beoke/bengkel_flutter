@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const MainScreen(), // Tampilkan MainScreen sebagai halaman utama
+      home: const LoginPage(), // Tampilkan MainScreen sebagai halaman utama
     );
   }
 }

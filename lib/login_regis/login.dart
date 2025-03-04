@@ -1,263 +1,147 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart';
-import '/main.dart'; // Import halaman dashboard
+import 'package:http/http.dart' as http;
+import '/main.dart';
+import 'registrasi.dart';
+import 'package:bengkel_flutter/main.dart';
 
-void main() => runApp(
-      const MaterialApp(
-        debugShowCheckedModeBanner: false, // Menyembunyikan banner debug
-        // home: LoginPage(), // Menetapkan halaman LoginPage sebagai halaman utama
-      ),
-    );
-
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Controller untuk mengambil nilai dari TextField
-    final ktpController = TextEditingController(); // Controller untuk No - KTP
-    final passwordController =
-        TextEditingController(); // Controller untuk Password
+  _LoginPageState createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController ktpController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false; // Indikator loading
+
+  Future<void> login() async {
+    if (ktpController.text.isEmpty || passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("No - KTP dan password tidak boleh kosong!")),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true; // Menampilkan indikator loading
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse(
+            'http://192.168.3.51:5000/api/Pelanggan/login'), // untuk port di sesuaikan dengan ipconfig
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'KtpPelanggan': ktpController.text,
+          'password': passwordController.text,
+        }),
+      );
+
+      print("Response Status: ${response.statusCode}");
+      print("Response Body: ${response.body}");
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200 || responseData['success'] == true) {
+
+        // Navigasi ke MainScreen setelah snack bar ditampilkan sebentar
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const MainScreen()),
+          );
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(responseData['message'] ?? "Login gagal!")),
+        );
+      }
+    } catch (e) {
+      print("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Terjadi kesalahan, coba lagi!")),
+      );
+    }
+
+    setState(() {
+      isLoading = false; // Sembunyikan indikator loading
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity, // Lebar container mengisi layar
+        width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft, // Gradien dimulai dari atas
+            begin: Alignment.topLeft,
             colors: [
-              Colors.red.shade900, // Warna gradien oranye tua
-              Colors.orange.shade800, // Warna gradien oranye sedang
-              Colors.orange.shade400, // Warna gradien oranye muda
+              Colors.red.shade900,
+              Colors.orange.shade800,
+              Colors.orange.shade400,
             ],
           ),
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // Konten diatur ke kiri
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const SizedBox(height: 40), // Jarak dari atas
+            const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.all(20), // Padding untuk judul
+              padding: const EdgeInsets.all(20),
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // Teks diatur ke kiri
-                children: <Widget>[
-                  FadeInUp(
-                    duration: const Duration(
-                        milliseconds: 1000), // Animasi selama 1 detik
-                    child: const Text(
-                      "Selamat Datang", // Judul "Login"
-                      style: TextStyle(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const <Widget>[
+                  Text(
+                    "Selamat Datang",
+                    style: TextStyle(
                         color: Colors.white,
                         fontSize: 40,
-                        fontWeight: FontWeight.bold, // Membuat teks bold
-                      ),
-                    ),
+                        fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 10), // Jarak antara judul dan subjudul
-                  FadeInUp(
-                    duration: const Duration(
-                        milliseconds: 1300), // Animasi selama 1.3 detik
-                    child: const Text(
-                      "Bengkel Techno DB", // Subjudul "Welcome Back"
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 18), // Gaya teks
-                    ),
+                  SizedBox(height: 10),
+                  Text(
+                    "Bengkel Techno DB",
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20), // Jarak antara judul dan konten utama
+            const SizedBox(height: 20),
             Expanded(
-              child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white, // Warna latar belakang putih
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60), // Sudut kiri atas melengkung
-                    topRight:
-                        Radius.circular(60), // Sudut kanan atas melengkung
+              child: SingleChildScrollView(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60),
+                    ),
                   ),
-                ),
-                child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(40), // Padding untuk konten
+                    padding: const EdgeInsets.all(40),
                     child: Column(
                       children: <Widget>[
-                        const SizedBox(height: 30), // Jarak sebelum TextField
-                        // TextField No - KTP
-                        FadeInUp(
-                          duration: const Duration(
-                              milliseconds: 1400), // Animasi selama 1.4 detik
-                          child: Container(
-                            width: double.infinity, // Lebar penuh
-                            decoration: BoxDecoration(
-                              color: Colors.white, // Warna latar belakang putih
-                              borderRadius:
-                                  BorderRadius.circular(50), // Sudut melengkung
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(
-                                      225, 95, 27, .3), // Bayangan oranye
-                                  blurRadius: 20, // Tingkat blur bayangan
-                                  offset: Offset(0, 10), // Posisi bayangan
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20), // Padding horizontal
-                              child: TextField(
-                                controller:
-                                    ktpController, // Controller untuk No - KTP
-                                decoration: const InputDecoration(
-                                  hintText:
-                                      "No - KTP", // Placeholder untuk No - KTP
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey), // Gaya placeholder
-                                  border: InputBorder
-                                      .none, // Menghilangkan border default
-                                ),
-                              ),
-                            ),
-                          ),
+                        const SizedBox(height: 30),
+                        _buildTextField(ktpController, "No - KTP", false),
+                        const SizedBox(height: 20),
+                        _buildTextField(passwordController, "Password", true),
+                        const SizedBox(height: 50),
+                        const Align(
+                          alignment: Alignment.centerRight,
+                          child: Text("Forgot Password?",
+                              style: TextStyle(color: Colors.purple)),
                         ),
-                        const SizedBox(
-                            height: 20), // Jarak antara No - KTP dan Password
-                        // TextField Password
-                        FadeInUp(
-                          duration: const Duration(
-                              milliseconds: 1600), // Animasi selama 1.6 detik
-                          child: Container(
-                            width: double.infinity, // Lebar penuh
-                            decoration: BoxDecoration(
-                              color: Colors.white, // Warna latar belakang putih
-                              borderRadius:
-                                  BorderRadius.circular(50), // Sudut melengkung
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(
-                                      225, 95, 27, .3), // Bayangan oranye
-                                  blurRadius: 20, // Tingkat blur bayangan
-                                  offset: Offset(0, 10), // Posisi bayangan
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20), // Padding horizontal
-                              child: TextField(
-                                controller:
-                                    passwordController, // Controller untuk Password
-                                obscureText:
-                                    true, // Menyembunyikan teks password
-                                decoration: const InputDecoration(
-                                  hintText:
-                                      "Password", // Placeholder untuk Password
-                                  hintStyle: TextStyle(
-                                      color: Colors.grey), // Gaya placeholder
-                                  border: InputBorder
-                                      .none, // Menghilangkan border default
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                            height:
-                                10), // Jarak antara TextField dan Forgot Password
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10), // Padding horizontal
-                          child: Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.end, // Teks diatur ke kanan
-                            children: [
-                              FadeInUp(
-                                duration: const Duration(
-                                    milliseconds:
-                                        1500), // Animasi selama 1.5 detik
-                                child: const Text(
-                                  "Forgot Password?", // Teks "Forgot Password"
-                                  style: TextStyle(
-                                      color: Colors.purple), // Gaya teks ungu
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                            height:
-                                100), // Jarak antara Forgot Password dan tombol Login
-                        FadeInUp(
-                          duration: const Duration(
-                              milliseconds: 1700), // Animasi selama 1.7 detik
-                          child: MaterialButton(
-                            onPressed: () {
-                              // Validasi sederhana
-                              if (ktpController.text.isEmpty ||
-                                  passwordController.text.isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                        "No - KTP dan password tidak boleh kosong!"), // Pesan error
-                                  ),
-                                );
-                              } else {
-                                // Navigasi ke halaman dashboard setelah login
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const MainScreen(),
-                                  ),
-                                );
-                              }
-                            },
-                            height: 50, // Tinggi tombol
-                            color:
-                                Colors.orange[900], // Warna tombol oranye tua
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  50), // Sudut tombol melengkung
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "Login", // Teks tombol
-                                style: TextStyle(
-                                  color: Colors.white, // Warna teks putih
-                                  fontWeight: FontWeight.bold, // Teks tebal
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                            height:
-                                20), // Jarak antara tombol Login dan Create Akun
-                        FadeInUp(
-                          duration: const Duration(
-                              milliseconds: 1800), // Animasi selama 1.8 detik
-                          child: MaterialButton(
-                            onPressed: () {
-                              // Navigasi ke halaman create akun
-                              // Misalnya: Navigator.push(context, MaterialPageRoute(builder: (context) => CreateAccountPage()));
-                            },
-                            height: 50, // Tinggi tombol
-                            color: Colors.blue, // Warna tombol biru
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  50), // Sudut tombol melengkung
-                            ),
-                            child: const Center(
-                              child: Text(
-                                "Create Akun", // Teks tombol
-                                style: TextStyle(
-                                  color: Colors.white, // Warna teks putih
-                                  fontWeight: FontWeight.bold, // Teks tebal
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                        const SizedBox(height: 50),
+                        isLoading
+                            ? const CircularProgressIndicator()
+                            : _buildLoginButton(),
+                        const SizedBox(height: 20),
+                        _buildRegisterButton(),
                       ],
                     ),
                   ),
@@ -265,6 +149,68 @@ class LoginPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      TextEditingController controller, String hint, bool isPassword) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(50),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromRGBO(225, 95, 27, .3),
+            blurRadius: 20,
+            offset: Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: TextField(
+          controller: controller,
+          obscureText: isPassword,
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: const TextStyle(color: Colors.grey),
+            border: InputBorder.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoginButton() {
+    return MaterialButton(
+      onPressed: login,
+      height: 50,
+      color: Colors.orange[900],
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      child: const Center(
+        child: Text(
+          "Login",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRegisterButton() {
+    return MaterialButton(
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const RegistrationPage()));
+      },
+      height: 50,
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+      child: const Center(
+        child: Text(
+          "Create Akun",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
