@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '/main.dart';
 import 'registrasi.dart';
-import 'package:bengkel_flutter/main.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,6 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController ktpController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  String? namaPelanggan; // simpan nama pelanggan
   bool isLoading = false; // Indikator loading
 
   Future<void> login() async {
@@ -32,36 +32,33 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse(
-            'http://192.168.3.51:5000/api/Pelanggan/login'), // untuk port di sesuaikan dengan ipconfig
+        Uri.parse('http://192.168.1.65:5000/api/Pelanggan/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'KtpPelanggan': ktpController.text,
+          'ktp_pelanggan': ktpController.text,
           'password': passwordController.text,
         }),
       );
 
-      print("Response Status: ${response.statusCode}");
-      print("Response Body: ${response.body}");
-
       final responseData = jsonDecode(response.body);
-
-      if (response.statusCode == 200 || responseData['success'] == true) {
-
-        // Navigasi ke MainScreen setelah snack bar ditampilkan sebentar
-        Future.delayed(const Duration(seconds: 1), () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const MainScreen()),
-          );
+      if (response.statusCode == 200 &&
+          responseData['nama_pelanggan'] != null) {
+        setState(() {
+          namaPelanggan =
+              responseData['nama_pelanggan']; // Simpan nama pelanggan
         });
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainScreen(namaPelanggan: responseData['nama_pelanggan'],)),
+        );
+        
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(responseData['message'] ?? "Login gagal!")),
         );
       }
     } catch (e) {
-      print("Error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Terjadi kesalahan, coba lagi!")),
       );

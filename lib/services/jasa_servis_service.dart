@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:bengkel_flutter/models/PaketServis.dart';
 import 'package:http/http.dart' as http;
-import '../models/PaketServis.dart';
 
 class JasaServisService {
   final String baseUrl = "https://localhost:7297/api/JasaServis";

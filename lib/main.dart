@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final String namaPelanggan;
+
+  const MainScreen({super.key, required this.namaPelanggan});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -40,8 +42,8 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0; // Indeks untuk BottomNavigationBar
 
   // Daftar halaman yang sesuai dengan item BottomNavigationBar
-  final List<Widget> _pages = [
-    const HomePage(), // home page
+  late List<Widget> _pages = [
+    HomePage(namaPelanggan: widget.namaPelanggan), // home page
     const BookingScreen(), // booking page
     const RiwayatScreen(), // history page
     const UserProfileScreen(), // profile page
@@ -91,7 +93,9 @@ class _MainScreenState extends State<MainScreen> {
 
 // Halaman Home
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  
+  final String namaPelanggan; //kirim nama pelanggan
+  const HomePage({super.key, required this.namaPelanggan});            //super.key
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +117,7 @@ class HomePage extends StatelessWidget {
                     Colors.orange.shade800, // Warna gradien oranye sedang
                     Colors.orange.shade400, // Warna gradien oranye muda
                   ],
-  
+
                   begin: Alignment.topCenter, // Mulai dari kiri tengah
                   end: Alignment.bottomCenter, // Berakhir di kanan tengah
                 ),
@@ -138,13 +142,14 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     // Label "Hai, nama user..."
-                    const Text(
-                      'Hai, Dhafa Bintang...',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+                    Text(
+                      'Hai, $namaPelanggan!',
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                     const Spacer(),
                     // Ikon lonceng
