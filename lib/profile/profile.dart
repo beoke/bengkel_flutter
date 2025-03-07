@@ -4,6 +4,7 @@ import 'package:bengkel_flutter/profile/edit/editprofile.dart';
 import 'package:bengkel_flutter/profile/edit/editkendaraan.dart';
 import 'package:flutter/material.dart';
 import 'tutorial.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const User());
@@ -33,9 +34,24 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  String namaPelanggan = 'Loading...'; // Nilai default sebelum data didapatkan
   bool _showinfokendaraan =
       true; // State untuk menampilkan/sembunyikan info kendaraan
-  bool _showTutorial = true; // state untuk menampilkan/sembunyikan tutorial
+  bool _showTutorial = true; // State untuk menampilkan/sembunyikan tutorial
+
+  @override
+  void initState() {
+    super.initState();
+    _getNamaPelanggan(); // Ambil nama pelanggan saat halaman dibuka
+  }
+
+  // Fungsi untuk mengambil nama pelanggan dari SharedPreferences
+  Future<void> _getNamaPelanggan() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      namaPelanggan = prefs.getString('nama_pelanggan') ?? 'Guest';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +79,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     backgroundImage: AssetImage('assets/user_placeholder.png'),
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Dhafa Bintang Ramadhan',
+                 Text(
+                    'Hai, $namaPelanggan!', 
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

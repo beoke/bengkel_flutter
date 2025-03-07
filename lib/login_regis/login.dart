@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '/main.dart';
 import 'registrasi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,16 +44,19 @@ class _LoginPageState extends State<LoginPage> {
       final responseData = jsonDecode(response.body);
       if (response.statusCode == 200 &&
           responseData['nama_pelanggan'] != null) {
-        setState(() {
-          namaPelanggan =
-              responseData['nama_pelanggan']; // Simpan nama pelanggan
-        });
+        String namaPelanggan =
+            responseData['nama_pelanggan']; // Ambil nama pelanggan
 
+        // Simpan nama pelanggan ke SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('nama_pelanggan', namaPelanggan);
+
+        // Pindah ke MainScreen dengan nama pelanggan
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => MainScreen(namaPelanggan: responseData['nama_pelanggan'],)),
+          MaterialPageRoute(
+              builder: (context) => MainScreen(namaPelanggan: namaPelanggan)),
         );
-        
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(responseData['message'] ?? "Login gagal!")),
