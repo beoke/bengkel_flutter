@@ -80,7 +80,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   const SizedBox(height: 16),
                  Text(
-                    'Hai, $namaPelanggan!', 
+                    '$namaPelanggan!', 
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,

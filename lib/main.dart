@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'profile/profile.dart';
 import 'booking/bookingjadwal.dart';
 import 'riwayat/riwayat.dart';
-import 'home/belanja.dart';
 import 'home/paketservice.dart';
 
 void main() {

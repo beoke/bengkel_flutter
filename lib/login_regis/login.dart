@@ -50,6 +50,7 @@ class _LoginPageState extends State<LoginPage> {
         // Simpan nama pelanggan ke SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('nama_pelanggan', namaPelanggan);
+        await prefs.setString('ktp_pelanggan', ktpController.text); // simpan no ktp
 
         // Pindah ke MainScreen dengan nama pelanggan
         Navigator.pushReplacement(
