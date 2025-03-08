@@ -92,9 +92,8 @@ class _MainScreenState extends State<MainScreen> {
 
 // Halaman Home
 class HomePage extends StatelessWidget {
-  
   final String namaPelanggan; //kirim nama pelanggan
-  const HomePage({super.key, required this.namaPelanggan});            //super.key
+  const HomePage({super.key, required this.namaPelanggan}); //super.key
 
   @override
   Widget build(BuildContext context) {
@@ -112,9 +111,10 @@ class HomePage extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.red.shade900, // Warna gradien oranye tua
-                    Colors.orange.shade800, // Warna gradien oranye sedang
-                    Colors.orange.shade400, // Warna gradien oranye muda
+                    Colors.red.shade900, // Merah muda terang
+                    Colors.red.shade700, // Merah muda terang
+                    Colors.orange.shade700, // Oranye sedang
+                    Colors.white, // Oranye tua 
                   ],
 
                   begin: Alignment.topCenter, // Mulai dari kiri tengah
@@ -147,7 +147,7 @@ class HomePage extends StatelessWidget {
                         fontSize: 25,
                         fontStyle: FontStyle.italic,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     ),
                     const Spacer(),

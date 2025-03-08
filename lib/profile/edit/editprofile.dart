@@ -31,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (noKtp != null) {  
       final response = await http.get(
-        Uri.parse('http://192.168.1.65:5000/api/Pelanggan/profile/$noKtp'),
+        Uri.parse('http://192.168.1.65:5000/api/Pelanggan/$noKtp'),
       );
 
       if (response.statusCode == 200) {
