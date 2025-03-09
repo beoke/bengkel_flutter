@@ -5,6 +5,8 @@ import 'package:bengkel_flutter/profile/edit/editkendaraan.dart';
 import 'package:flutter/material.dart';
 import 'tutorial.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert'; // Untuk jsonDecode
+import 'package:http/http.dart' as http; // Untuk HTTP request
 
 void main() {
   runApp(const User());
@@ -39,12 +41,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       true; // State untuk menampilkan/sembunyikan info kendaraan
   bool _showTutorial = true; // State untuk menampilkan/sembunyikan tutorial
   String? ktpPelanggan;
+  List<Map<String, dynamic>> kendaraanList = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _getNamaPelanggan(); // Ambil nama pelanggan saat halaman dibuka
     _loadKtp();
+    fetchKendaraan();
   }
 
   // Fungsi untuk mengambil nama pelanggan dari SharedPreferences
@@ -60,6 +65,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     setState(() {
       ktpPelanggan = prefs.getString('ktp_pelanggan');
     });
+  }
+
+  Future<void> fetchKendaraan() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String? noKtp = prefs.getString('ktp_pelanggan');
+
+    if (noKtp == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No KTP tidak ditemukan!")),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      final response = await http.get(
+        Uri.parse('http://192.168.1.65:5000/api/Pelanggan/kendaraan/$noKtp'), // belum tertemukan apinya
+      );
+
+      final responseData = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        setState(() {
+          kendaraanList = List<Map<String, dynamic>>.from(responseData);
+          isLoading = false;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text(
+                  responseData['message'] ?? "Gagal memuat data kendaraan!")),
+        );
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Terjadi kesalahan, coba lagi!")),
+      );
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -273,120 +325,143 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         ),
                       ),
                     ),
-
-                    Row(
+                    Column(
                       children: [
-                        const Text(
-                          'Kendaraan',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Saya :',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer(),
-                        Transform.rotate(
-                          angle:
-                              1.57, // Sudut rotasi 90 derajat (menghadap ke samping)
-                          child: IconButton(
-                            icon: Icon(
-                              _showinfokendaraan
-                                  ? Icons.arrow_forward
-                                  : Icons.arrow_back,
+                        Row(
+                          children: [
+                            const Text(
+                              'Kendaraan',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                              ),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _showinfokendaraan =
-                                    !_showinfokendaraan; // Toggle state
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    if (_showinfokendaraan) // Tampilkan info kendaraan jika _showinfokendaraan true
-                      Card(
-                        elevation: 4,
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Stack(
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 30),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: const [
-                                        Icon(
-                                          Icons.motorcycle,
-                                          size: 40,
-                                          color: Colors.blue,
-                                        ),
-                                        SizedBox(height: 4),
-                                        Text(
-                                          'Motor',
-                                          style: TextStyle(fontSize: 14),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                  const SizedBox(width: 20),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: const [
-                                        Text(
-                                          'Nomor Polisi: B 1234 XYZ',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text('Merek: Honda'),
-                                        Text('CC: 150 CC'),
-                                        Text('Jenis: Motor Sport'),
-                                        Text('Tahun: 2022'),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                            const SizedBox(width: 8),
+                            const Text(
+                              'Saya :',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
                               ),
-                              // Ikon edit di pojok kanan bawah
-                              Positioned(
-                                right: 10,
-                                bottom: 2,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder:
-                                                (context) => // klik menuju edit kendaraan
-                                                    EditKendaraanScreen()));
-                                  },
-                                  child: Image.asset(
-                                    'assets/edit.png',
-                                    width: 24,
-                                    height: 24,
-                                  ),
+                            ),
+                            const Spacer(),
+                            Transform.rotate(
+                              angle: 1.57,
+                              child: IconButton(
+                                icon: Icon(
+                                  _showinfokendaraan
+                                      ? Icons.arrow_forward
+                                      : Icons.arrow_back,
                                 ),
+                                onPressed: () {
+                                  setState(() {
+                                    _showinfokendaraan = !_showinfokendaraan;
+                                  });
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ),
+                        const SizedBox(height: 5),
+                        if (_showinfokendaraan)
+                          isLoading
+                              ? const CircularProgressIndicator() // Loading indicator
+                              : kendaraanList.isEmpty
+                                  ? const Text("Tidak ada kendaraan.")
+                                  : ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: kendaraanList.length,
+                                      itemBuilder: (context, index) {
+                                        var kendaraan = kendaraanList[index];
+                                        return Card(
+                                          elevation: 4,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 8),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Row(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 30),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: const [
+                                                      Icon(
+                                                        Icons.motorcycle,
+                                                        size: 40,
+                                                        color: Colors.blue,
+                                                      ),
+                                                      SizedBox(height: 4),
+                                                      Text(
+                                                        'Motor',
+                                                        style: TextStyle(
+                                                            fontSize: 14),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 16),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        'Nomor Polisi: ${kendaraan["nomor_polisi"]}',
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                          'Merek: ${kendaraan["merek"]}'),
+                                                      Text(
+                                                          'CC: ${kendaraan["cc"]} CC'),
+                                                      Text(
+                                                          'Jenis: ${kendaraan["jenis"]}'),
+                                                      Text(
+                                                          'Tahun: ${kendaraan["tahun"]}'),
+                                                    ],
+                                                  ),
+                                                ),
+                                                // Ikon edit di pojok kanan bawah
+                                                Positioned(
+                                                  right: 10,
+                                                  bottom: 2,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditKendaraanScreen(
+                                                            kendaraan:
+                                                                kendaraan,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Image.asset(
+                                                      'assets/edit.png',
+                                                      width: 24,
+                                                      height: 24,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                      ],
+                    )
                   ],
                 ),
               ),
