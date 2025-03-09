@@ -34,15 +34,17 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
-  String namaPelanggan = 'Loading...'; // Nilai default sebelum data didapatkan
+  String namaPelanggan = 'Loading...';
   bool _showinfokendaraan =
       true; // State untuk menampilkan/sembunyikan info kendaraan
   bool _showTutorial = true; // State untuk menampilkan/sembunyikan tutorial
+  String? ktpPelanggan;
 
   @override
   void initState() {
     super.initState();
     _getNamaPelanggan(); // Ambil nama pelanggan saat halaman dibuka
+    _loadKtp();
   }
 
   // Fungsi untuk mengambil nama pelanggan dari SharedPreferences
@@ -50,6 +52,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       namaPelanggan = prefs.getString('nama_pelanggan') ?? 'Guest';
+    });
+  }
+
+  Future<void> _loadKtp() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      ktpPelanggan = prefs.getString('ktp_pelanggan');
     });
   }
 
@@ -79,8 +88,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     backgroundImage: AssetImage('assets/user_placeholder.png'),
                   ),
                   const SizedBox(height: 16),
-                 Text(
-                    '$namaPelanggan!', 
+                  Text(
+                    '$namaPelanggan!',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -169,14 +178,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       elevation: 4,
                       margin: const EdgeInsets.symmetric(vertical: 8),
                       child: InkWell(
-                        onTap: () {
-                          // Navigasi ke halaman EditProfileScreen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const EditProfileScreen(),
-                            ),
-                          );
+                        onTap: () async {
+                          if (ktpPelanggan != null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditProfileScreen(
+                                    ktpPelanggan: ktpPelanggan!),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Nomor KTP tidak ditemukan!")),
+                            );
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),

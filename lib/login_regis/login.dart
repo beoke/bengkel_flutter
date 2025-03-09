@@ -46,11 +46,12 @@ class _LoginPageState extends State<LoginPage> {
           responseData['nama_pelanggan'] != null) {
         String namaPelanggan =
             responseData['nama_pelanggan']; // Ambil nama pelanggan
+        String noKtp = responseData['ktp_pelanggan']; // Ambil no KTP
 
         // Simpan nama pelanggan ke SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('nama_pelanggan', namaPelanggan);
-        await prefs.setString('ktp_pelanggan', ktpController.text); // simpan no ktp
+        await prefs.setString('ktp_pelanggan', noKtp); // Simpan no KTP
 
         // Pindah ke MainScreen dengan nama pelanggan
         Navigator.pushReplacement(
