@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class BookingScreen extends StatefulWidget {
   const BookingScreen({super.key});
@@ -11,15 +13,37 @@ class _BookingScreenState extends State<BookingScreen> {
   String? selectedVehicle;
   String? selectedServicePackage;
   DateTime? selectedDate;
-  final TextEditingController locationController = TextEditingController();
   final TextEditingController complaintController = TextEditingController();
 
   final List<String> vehicles = ['Mobil', 'Motor', 'Sepeda'];
-  final List<String> servicePackages = [
-    'Paket Basic',
-    'Paket Standard',
-    'Paket Premium'
-  ];
+  List<String> servicePackages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchJasaServisName(null); // Panggil API saat halaman pertama kali dibuka
+  }
+
+  // Function untuk mengambil data Paket Servis dari API
+ Future<void> fetchJasaServisName(int? id) async {
+  if (id == null) return; // Hindari request tidak valid jika ID kosong
+
+  try {
+    final response = await http.get(
+      Uri.parse('http://192.168.1.65:5000/api/JasaServis/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        selectedServicePackage = response.body.isNotEmpty ? response.body : 'Nama tidak ditemukan';
+      });
+    } else {
+      throw Exception('Gagal mengambil nama jasa servis');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -38,25 +62,22 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Booking'),
-      ),
+      appBar: AppBar(title: const Text('Booking')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             // Input kalender dengan ikon tanggal
             InkWell(
-              onTap: () => _selectDate(context),
+              onTap: () => 
+              _selectDate(context),
               child: InputDecorator(
                 decoration: InputDecoration(
                   labelText: 'Pilih Tanggal',
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  suffixIcon: Icon(Icons.calendar_today),
+                      borderRadius: BorderRadius.circular(10.0)),
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 child: Text(
                   selectedDate != null
@@ -67,7 +88,7 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
             const SizedBox(height: 20),
 
-            // ComboBox untuk memilih jenis kendaraan
+            // Dropdown Jenis Kendaraan
             DropdownButtonFormField<String>(
               value: selectedVehicle,
               onChanged: (String? newValue) {
@@ -80,7 +101,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   value: null,
                   child: Text('Pilih Jenis Kendaraan'),
                 ),
-                ...vehicles.map<DropdownMenuItem<String>>((String value) {
+                ...vehicles.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -94,8 +115,8 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            
-            // ComboBox untuk memilih jenis paket service
+
+            // Dropdown Paket Servis
             DropdownButtonFormField<String>(
               value: selectedServicePackage,
               onChanged: (String? newValue) {
@@ -108,8 +129,7 @@ class _BookingScreenState extends State<BookingScreen> {
                   value: null,
                   child: Text('Pilih Jenis Paket Service'),
                 ),
-                ...servicePackages
-                    .map<DropdownMenuItem<String>>((String value) {
+                ...servicePackages.map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -118,25 +138,25 @@ class _BookingScreenState extends State<BookingScreen> {
               ],
               decoration: InputDecoration(
                 labelText: 'Jenis Paket Service',
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
             const SizedBox(height: 20),
 
-            // TextField untuk mengisi keluhan
+            // Input Keluhan
             TextField(
               controller: complaintController,
               decoration: InputDecoration(
                 labelText: 'Keluhan',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
+                    borderRadius: BorderRadius.circular(10.0)),
               ),
               maxLines: 3,
             ),
             const SizedBox(height: 130),
 
-            // Tombol untuk melakukan booking dengan gradient
+            // Tombol Booking
             Container(
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
@@ -148,13 +168,11 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
               child: ElevatedButton(
                 onPressed: () {
-                  // Lakukan sesuatu dengan data yang diinput
                   final vehicle = selectedVehicle;
                   final servicePackage = selectedServicePackage;
                   final complaint = complaintController.text;
                   final date = selectedDate;
 
-                  // Contoh: Tampilkan data yang diinput
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -173,9 +191,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         ),
                         actions: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
+                            onPressed: () => Navigator.of(context).pop(),
                             child: const Text('OK'),
                           ),
                         ],

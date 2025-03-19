@@ -3,7 +3,7 @@ import 'package:bengkel_flutter/models/PaketServis.dart';
 import 'package:http/http.dart' as http;
 
 class JasaServisService {
-  final String baseUrl = "https://localhost:7297/api/JasaServis";
+  final String baseUrl = "http://192.168.1.65:5000/api/JasaServis";
 
   Future<List<JasaServis>> fetchJasaServis() async {
     try {

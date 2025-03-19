@@ -108,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Bengkel Techno DB",
+                    "TECHNO GARAGE",
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ],
