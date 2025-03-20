@@ -21,30 +21,8 @@ class _BookingScreenState extends State<BookingScreen> {
   @override
   void initState() {
     super.initState();
-    fetchJasaServisName(null); // Panggil API saat halaman pertama kali dibuka
   }
-
-  // Function untuk mengambil data Paket Servis dari API
- Future<void> fetchJasaServisName(int? id) async {
-  if (id == null) return; // Hindari request tidak valid jika ID kosong
-
-  try {
-    final response = await http.get(
-      Uri.parse('http://192.168.1.65:5000/api/JasaServis/$id'),
-    );
-
-    if (response.statusCode == 200) {
-      setState(() {
-        selectedServicePackage = response.body.isNotEmpty ? response.body : 'Nama tidak ditemukan';
-      });
-    } else {
-      throw Exception('Gagal mengambil nama jasa servis');
-    }
-  } catch (e) {
-    print('Error: $e');
-  }
-}
-
+  
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -114,34 +92,7 @@ class _BookingScreenState extends State<BookingScreen> {
                     borderRadius: BorderRadius.circular(10.0)),
               ),
             ),
-            const SizedBox(height: 20),
 
-            // Dropdown Paket Servis
-            DropdownButtonFormField<String>(
-              value: selectedServicePackage,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedServicePackage = newValue;
-                });
-              },
-              items: [
-                const DropdownMenuItem<String>(
-                  value: null,
-                  child: Text('Pilih Jenis Paket Service'),
-                ),
-                ...servicePackages.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ],
-              decoration: InputDecoration(
-                labelText: 'Jenis Paket Service',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
-              ),
-            ),
             const SizedBox(height: 20),
 
             // Input Keluhan
@@ -169,7 +120,6 @@ class _BookingScreenState extends State<BookingScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   final vehicle = selectedVehicle;
-                  final servicePackage = selectedServicePackage;
                   final complaint = complaintController.text;
                   final date = selectedDate;
 
@@ -183,7 +133,6 @@ class _BookingScreenState extends State<BookingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Jenis Kendaraan: $vehicle'),
-                            Text('Paket Service: $servicePackage'),
                             Text('Keluhan: $complaint'),
                             Text(
                                 'Tanggal: ${date != null ? "${date.toLocal()}".split(' ')[0] : "Tidak dipilih"}'),

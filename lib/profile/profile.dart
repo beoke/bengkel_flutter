@@ -84,7 +84,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.65:5000/api/Pelanggan/kendaraan/$noKtp'), // belum tertemukan apinya
+        Uri.parse('http://192.168.2.212:5000/api/Pelanggan/kendaraan/$noKtp'), // belum tertemukan apinya
       );
 
       final responseData = jsonDecode(response.body);
