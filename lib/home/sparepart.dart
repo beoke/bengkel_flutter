@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class BelanjaScreen extends StatelessWidget {
-  const BelanjaScreen({super.key});
+class SparepartScreen extends StatelessWidget {
+  const SparepartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Belanja'),
+        title: const Text('Sparepart'),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -18,8 +18,8 @@ class BelanjaScreen extends StatelessWidget {
             // TextField untuk pencarian
             TextField(
               decoration: InputDecoration(
-                labelText: 'Cari produk',
-                hintText: 'Masukkan nama produk...',
+                labelText: 'Cari Sparepart',
+                hintText: 'Masukkan nama sparepart...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
@@ -130,7 +130,7 @@ class BelanjaScreen extends StatelessWidget {
 void main() {
   runApp(
     const MaterialApp(
-      home: BelanjaScreen(),
+      home: SparepartScreen(),
     ),
   );
 }

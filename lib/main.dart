@@ -1,4 +1,4 @@
-import 'package:bengkel_flutter/home/belanja.dart';
+import 'package:bengkel_flutter/home/sparepart.dart';
 import 'package:bengkel_flutter/home/konsultasi.dart';
 import 'package:bengkel_flutter/home/notifikasi.dart';
 import 'package:bengkel_flutter/login_regis/login.dart';
@@ -231,12 +231,12 @@ class HomePage extends StatelessWidget {
                             children: [
                               _buildElement(
                                 icon: 'assets/belanja.png',
-                                title: 'Belanja',
+                                title: 'Sparepart',
                                 onTap: () {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => BelanjaScreen(),
+                                      builder: (context) => SparepartScreen(),
                                     ),
                                   );
                                 },

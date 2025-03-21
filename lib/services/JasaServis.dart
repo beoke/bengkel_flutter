@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:bengkel_flutter/models/PaketServis.dart';
+import 'package:bengkel_flutter/models/model_paketServis/PaketServis.dart';
 import 'package:http/http.dart' as http;
 import 'package:bengkel_flutter/config.dart';
 
