@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import '/main.dart';
 import 'registrasi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:bengkel_flutter/config.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.2.212:5000/api/Pelanggan/login'),
+        Uri.parse('${Config.baseUrl}/Pelanggan/login'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'ktp_pelanggan': ktpController.text,

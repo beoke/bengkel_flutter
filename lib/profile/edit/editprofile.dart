@@ -31,7 +31,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _getUserData() async {
     final response = await http.get(
-      Uri.parse('http://192.168.2.212:5000/api/Pelanggan/profile/${widget.ktpPelanggan}'),
+      Uri.parse('http://192.168.1.65:5000/api/Pelanggan/profile/${widget.ktpPelanggan}'),
     );
 
     if (response.statusCode == 200) {

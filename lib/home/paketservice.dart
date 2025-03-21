@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bengkel_flutter/config.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,7 +22,7 @@ class _PaketserviceScreenState extends State<PaketserviceScreen> {
   Future<List<dynamic>> fetchData() async {
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.1.65:5000/api/JasaServis'), 
+        Uri.parse('${Config.baseUrl}/JasaServis'), 
       );
 
       if (response.statusCode == 200) {

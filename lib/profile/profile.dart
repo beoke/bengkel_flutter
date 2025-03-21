@@ -1,3 +1,4 @@
+import 'package:bengkel_flutter/config.dart';
 import 'package:bengkel_flutter/home/notifikasi.dart';
 import 'package:bengkel_flutter/profile/addkendaraan.dart';
 import 'package:bengkel_flutter/profile/edit/editprofile.dart';
@@ -84,7 +85,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     try {
       final response = await http.get(
-        Uri.parse('http://192.168.2.212:5000/api/Pelanggan/kendaraan/$noKtp'), // belum tertemukan apinya
+        Uri.parse('${Config.baseUrl}/Pelanggan/kendaraan/$noKtp'), // belum tertemukan apinya
       );
 
       final responseData = jsonDecode(response.body);
