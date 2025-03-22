@@ -114,7 +114,7 @@ class HomePage extends StatelessWidget {
                     Colors.red.shade900, // Merah muda terang
                     Colors.red.shade700, // Merah muda terang
                     Colors.orange.shade700, // Oranye sedang
-                    Colors.white, // Oranye tua 
+                    Colors.white, // Oranye tua
                   ],
 
                   begin: Alignment.topCenter, // Mulai dari kiri tengah
@@ -134,10 +134,18 @@ class HomePage extends StatelessWidget {
                 // Bagian atas: Gambar profil, label, dan ikon lonceng
                 Row(
                   children: [
-                    // Gambar profil
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: AssetImage('assets/profil.png'),
+                    // Gambar profil yang bisa diklik
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UserProfileScreen()),
+                        );
+                      },
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: AssetImage('assets/profil.png'),
+                      ),
                     ),
                     const SizedBox(width: 12),
                     // Label "Hai, nama user..."
