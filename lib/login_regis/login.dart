@@ -76,87 +76,91 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            colors: [
-              Colors.red.shade900,
-              Colors.orange.shade800,
-              Colors.orange.shade400,
-            ],
-          ),
+ @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    body: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          colors: [
+            Colors.red.shade900,
+            Colors.orange.shade800,
+            Colors.orange.shade400,
+          ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            const SizedBox(height: 40),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const <Widget>[
-                  Text(
-                    "Selamat Datang",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    "TECHNO GARAGE",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ],
-              ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 40),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const <Widget>[
+                Text(
+                  "Selamat Datang",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  "TECHNO GARAGE",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(60),
-                      topRight: Radius.circular(60),
-                    ),
+          ),
+          const SizedBox(height: 50),
+
+          // Bagian yang dapat menyesuaikan ukuran
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.7, // Menggunakan 70% dari tinggi layar
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(60),
+                    topRight: Radius.circular(60),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(40),
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 30),
-                        _buildTextField(ktpController, "No - KTP", false),
-                        const SizedBox(height: 20),
-                        _buildTextField(passwordController, "Password", true),
-                        const SizedBox(height: 50),
-                        const Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("Forgot Password?",
-                              style: TextStyle(color: Colors.purple)),
-                        ),
-                        const SizedBox(height: 50),
-                        isLoading
-                            ? const CircularProgressIndicator()
-                            : _buildLoginButton(),
-                        const SizedBox(height: 20),
-                        _buildRegisterButton(),
-                      ],
-                    ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(40),
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(height: 60),
+                      _buildTextField(ktpController, "No - KTP", false),
+                      const SizedBox(height: 20),
+                      _buildTextField(passwordController, "Password", true),
+                      const SizedBox(height: 50),
+                      const Align(
+                        alignment: Alignment.centerRight,
+                        child: Text("Forgot Password?",
+                            style: TextStyle(color: Colors.purple)),
+                      ),
+                      const SizedBox(height: 50),
+                      isLoading
+                          ? const CircularProgressIndicator()
+                          : _buildLoginButton(),
+                      const SizedBox(height: 20),
+                      _buildRegisterButton(),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildTextField(
       TextEditingController controller, String hint, bool isPassword) {
